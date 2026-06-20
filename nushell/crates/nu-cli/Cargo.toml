@@ -4,9 +4,9 @@ description = "CLI-related functionality for Nushell"
 repository = "https://github.com/nushell/nushell/tree/main/crates/nu-cli"
 edition.workspace = true
 license.workspace = true
-name = "nu-cli"
+name = "shannon-nu-cli"
 rust-version.workspace = true
-version.workspace = true
+version = "0.5.5"
 autotests = false
 
 [lib]
@@ -40,6 +40,9 @@ nu-color-config.workspace = true
 nu-experimental.workspace = true
 nu-ansi-term.workspace = true
 reedline = { workspace = true, features = ["bashisms"] }
+tree-sitter = "0.26"
+tree-sitter-bash = "0.23"
+tree-sitter-language = "0.1"
 
 chrono = { default-features = false, features = ["std"], workspace = true }
 crossterm = { workspace = true }

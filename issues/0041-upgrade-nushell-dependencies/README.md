@@ -81,4 +81,4 @@ The verification bar should include:
 ## Experiments
 
 - [Experiment 1: Sync nushell 0.113.1 and align dependency graph](01-sync-nushell-0-113-1.md)
-  — **Designed**
+  — **Pass**

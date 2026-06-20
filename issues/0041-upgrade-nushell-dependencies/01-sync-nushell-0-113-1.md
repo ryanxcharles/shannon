@@ -167,3 +167,53 @@ second review.
 Second Codex design review: **Approved**. No required findings remained. The
 review suggested adding explicit non-interactive subtree merge messages; that
 suggestion was applied before the plan commit.
+
+## Result
+
+**Result:** Pass
+
+Shannon's vendored Nushell tree is upgraded to upstream 0.113.1 and the vendored
+Reedline tree is upgraded to v0.48.0, which is the Reedline version required by
+Nushell 0.113.1. The upgrade preserved Shannon's fork surface: `shannon-nu-cli`,
+`shannon-nu-lsp`, the `ModeDispatcher` hook, Bash highlighting, Shift+Tab
+host-command switching, the `input --default` Reedline buffer behavior, and
+Shannon's root path dependency layout.
+
+The root dependency graph is aligned to Nushell 0.113.1 for upstream `nu-*`
+crates, while Shannon-renamed crates keep version 0.5.5. `build.rs` now reads
+the Nushell workspace package version because upstream `nu-protocol` uses
+`version.workspace = true`.
+
+Verification performed on 2026-06-19:
+
+- `cargo build` — pass, with one upstream `nu-command` unfulfilled lint
+  expectation warning.
+- `cargo test` — pass: 10 library tests, 13 binary tests, empty integration
+  harness, and empty doctest set.
+- `./target/debug/shannon --version` — pass: `0.5.5 (nushell 0.113.1)`.
+- `./target/debug/shannon -c '1 + 2'` — pass: `3`.
+- `./target/debug/shannon --commands 'print "nu-smoke"'` — pass: `nu-smoke`.
+- PTY-backed `expect` smoke test with `--no-config-file --no-history` — pass: nu
+  mode printed `NU_OK`, the `__shannon_switch` host-command path switched to
+  bash mode, bash printed `BASH_OK:bash:from_bash:/tmp`, switching back to nu
+  mode preserved the exported env var and cwd, and nu printed
+  `NU_BACK:nu:from_bash:/tmp`.
+
+## Conclusion
+
+The 0.113.1 upgrade can ship as a single experiment. Upstream API drift was
+small enough to patch directly after the subtree sync: the copied IDE code now
+uses the updated `WorkingSet::add_file` signature, the Shannon version output
+reports the embedded Nushell workspace version, and the REPL hook was ported
+onto the upstream 0.113.1 loop structure without removing Shannon's mode
+dispatch behavior.
+
+## Result Review
+
+Codex result review: **Approved**. No required findings.
+
+The reviewer checked correctness, upstream fidelity, dependency/version
+alignment, workflow compliance, and verification coverage. It reported one nit:
+`build.rs` still used a stale `0.111.0` fallback if Nushell version parsing
+failed. That nit was fixed by changing the fallback to `unknown`, and
+`cargo build` plus `./target/debug/shannon --version` were rerun successfully.
