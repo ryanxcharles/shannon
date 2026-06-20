@@ -1,6 +1,8 @@
 ---
 name: research-open-source
-description: "Use the local copies of each repo when doing research. Use this when doing research on any open source repo."
+description:
+  "Use the local copies of each repo when doing research. Use this when doing
+  research on any open source repo."
 ---
 
 # Research Open Source
@@ -19,15 +21,15 @@ ls ~/dev/olshell/vendor/
 
 ### Currently available repos
 
-| Repo | Path |
-|------|------|
-| reedline | `vendor/reedline/` |
-| nushell | `vendor/nushell/` |
-| bash | `vendor/bash/` |
-| zsh | `vendor/zsh/` |
-| fish | `vendor/fish/` |
+| Repo       | Path                 |
+| ---------- | -------------------- |
+| reedline   | `vendor/reedline/`   |
+| nushell    | `vendor/nushell/`    |
+| bash       | `vendor/bash/`       |
+| zsh        | `vendor/zsh/`        |
+| fish       | `vendor/fish/`       |
 | PowerShell | `vendor/powershell/` |
-| elvish | `vendor/elvish/` |
+| elvish     | `vendor/elvish/`     |
 
 ## Research workflow
 
