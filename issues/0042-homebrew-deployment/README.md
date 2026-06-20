@@ -102,8 +102,9 @@ The formula verification bar should include:
 - Should the formula install any shell integration files, completions, or
   Nushell configuration helpers, or only the `shannon` binary for the first
   release?
-- What version should be published first through Homebrew? Experiment 1 uses the
-  current Shannon package version, `0.5.5`.
+- What version should be published first through Homebrew? Experiment 1 uses a
+  new patch release, `0.5.6`, because `v0.5.5` already exists and points at
+  pre-Homebrew, pre-Nushell-0.113.1 code.
 
 ## Experiments
 

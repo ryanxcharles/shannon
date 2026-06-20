@@ -25,9 +25,11 @@ This choice is deliberate for the first publication because this checkout's
 `shannonshell/homebrew-shannon` if that organization should own the canonical
 tap.
 
-The first Homebrew release version is `0.5.5`, matching the current root
-`Cargo.toml` package version. Any different version must be recorded as a new
-plan change before implementation or publication begins.
+The first Homebrew release version is `0.5.6`. The original design-review fix
+used `0.5.5`, matching the package version at the time, but publication
+preflight found that tag already exists on `origin` and points at pre-Homebrew,
+pre-Nushell-0.113.1 code. This experiment must therefore bump Shannon's package
+version to `0.5.6` and publish that new tag rather than overwrite `v0.5.5`.
 
 ## Changes
 
@@ -36,6 +38,9 @@ Planned repo changes:
 - `dist/shannon.rb` — add the Homebrew formula source of truth.
 - `scripts/make-source-tarball.sh` — add a release-asset tarball builder that
   archives the full tracked source tree with `nushell/` and `reedline/`.
+- `Cargo.toml`, `Cargo.lock`, `nushell/Cargo.toml`,
+  `nushell/crates/nu-cli/Cargo.toml`, `nushell/crates/nu-lsp/Cargo.toml`, and
+  lockfiles — bump Shannon-owned crate versions from `0.5.5` to `0.5.6`.
 - `README.md` — lead installation with the Homebrew tap path and keep Cargo
   install/build instructions as source/developer alternatives.
 - `issues/0042-homebrew-deployment/README.md` — update Experiment 1 status when
@@ -45,8 +50,8 @@ Planned repo changes:
 
 Planned external publication changes:
 
-- `ryanxcharles/shannon` — create or update GitHub Release `v0.5.5` with a
-  source tarball asset named `shannon-0.5.5.tar.gz`.
+- `ryanxcharles/shannon` — create or update GitHub Release `v0.5.6` with a
+  source tarball asset named `shannon-0.5.6.tar.gz`.
 - `ryanxcharles/homebrew-shannon` — create or update a public Homebrew tap with
   `Formula/shannon.rb`, a README containing the tap/trust/install commands, and
   a bottle release if bottling succeeds.
@@ -63,7 +68,7 @@ Formula shape:
 - `def install` uses Homebrew's standard Rust pattern:
   `system "cargo", "install", *std_cargo_args`.
 - `test do` checks:
-  - `shannon --version` includes the formula version and `nushell 0.113.1`;
+  - `shannon --version` includes `0.5.6` and `nushell 0.113.1`;
   - `shannon -c '1 + 2'` prints `3`.
 
 Publication sequence:
@@ -72,7 +77,7 @@ Publication sequence:
    - confirm the Shannon repo is clean;
    - confirm `origin` is `ryanxcharles/shannon`;
    - confirm GitHub CLI auth is for `ryanxcharles`;
-   - confirm whether `v0.5.5` already exists on `ryanxcharles/shannon`;
+   - confirm whether `v0.5.6` already exists on `ryanxcharles/shannon`;
    - confirm whether `ryanxcharles/homebrew-shannon` already exists.
 2. Record design review approval and commit this experiment plan before
    implementation.
@@ -93,8 +98,8 @@ Publication sequence:
      `strings $(brew --prefix)/bin/shannon | rg "$PWD"`.
 7. If local verification passes, publish:
    - push the implementation commit to `origin`;
-   - create tag `v0.5.5` pointing at that commit;
-   - create the GitHub Release with `shannon-0.5.5.tar.gz`;
+   - create tag `v0.5.6` pointing at that commit;
+   - create the GitHub Release with `shannon-0.5.6.tar.gz`;
    - update the tap formula URL and sha256 to the uploaded release asset;
    - create/push `ryanxcharles/homebrew-shannon` if it does not exist.
 8. Run public formula checks after the release URL exists:
@@ -138,7 +143,7 @@ Optional finding:
 
 Fixes applied before re-review:
 
-- Pinned Experiment 1 to Shannon version `0.5.5`.
+- Pinned Experiment 1 to Shannon version `0.5.6`.
 - Split verification into local pre-publication proof without online audit, then
   public `brew style` / `brew audit --new --strict` after the release URL and
   tap formula exist.
@@ -148,6 +153,17 @@ Fixes applied before re-review:
 Second Codex design review: **Approved**. No required findings remained. The
 reviewer noted one formatting nit in the nested cold-install checklist; that nit
 was fixed before the plan commit.
+
+Publication preflight after local formula proof found that `v0.5.5` already
+exists on `origin` at commit `1049bff25`, before Issue 41's Nushell 0.113.1
+upgrade. Reusing `0.5.5` would require overwriting an existing tag, which this
+plan forbids. The plan is therefore amended to publish `0.5.6` and bump
+Shannon-owned package versions before the public release.
+
+Codex review of the `0.5.6` plan amendment: **Approved**. No required findings.
+The reviewer noted one optional implementation reminder: update
+`dist/shannon.rb` from the initial local-proof `0.5.5` values to `0.5.6` before
+publication.
 
 ## Verification
 
